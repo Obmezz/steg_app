@@ -1,0 +1,156 @@
+1: Imports the core Flutter material design library.
+2: Imports Provider for state management.
+3: Imports application routes for navigation.
+4: Imports UserRepository to check for existing users in the database.
+5: Imports BiometricService for biometric authentication during startup.
+6: Imports UserProvider to set the current user session.
+7: Imports SecurityProvider to check biometric settings.
+8: Empty line.
+9: Defines SplashScreen as a StatefulWidget.
+10: Constructor for SplashScreen.
+11: Empty line.
+12: Creates the state for SplashScreen.
+13: Close class.
+14: Empty line.
+15: State class for SplashScreen using SingleTickerProviderStateMixin for animations.
+16: Controller for managing the animation lifecycle.
+17: Animation for fading the logo and text in.
+18: Animation for scaling the logo icon.
+19: Instantiates UserRepository for database checks.
+20: Instantiates BiometricService for local authentication.
+21: Empty line.
+22: Overrides initState to initialize animations and start app logic.
+23: Calls super.initState.
+24: Initializes the AnimationController with a 1.5-second duration.
+25: vsync links to this state for performance.
+26: duration set to 1500ms.
+27: Close controller init.
+28: Empty line.
+29: Defines the fade animation from 0% to 100% opacity.
+30: Uses a CurvedAnimation with Curves.easeIn.
+31: Close fade animation.
+32: Empty line.
+33: Defines the scale animation from 0.8x to 1.0x size.
+34: Uses a CurvedAnimation with Curves.easeOutBack for a slight bounce effect.
+35: Close scale animation.
+36: Empty line.
+37: Starts the animation playback.
+38: Empty line.
+39: Calls the initialization logic.
+40: Close initState.
+41: Empty line.
+42: Async method to initialize the app state and decide where to navigate.
+43: Gets the navigator from the current context.
+44: Reads the UserProvider from context (non-listening).
+45: Reads the SecurityProvider from context (non-listening).
+46: Empty line.
+47: Delays the navigation for 3 seconds to show the splash screen.
+48: Ensures the widget is still in the tree before navigating.
+49: Empty line.
+50: Checks if there are any users registered in the database.
+51: Empty line.
+52: If a user exists.
+53: Checks if the user has enabled biometric login in their settings.
+54: Attempts to authenticate the user biometrically.
+55: If authentication is successful and the widget is still mounted.
+56: Queries the database for the first user found.
+57: If a user is found and mounted.
+58: Sets the found user as the current user in the provider.
+59: Replaces the splash screen with the Home screen.
+60: Exits the function.
+61: Close user found check.
+62: Close success check.
+63: Close biometrics check.
+64: Else if biometrics are disabled but a user exists.
+65: Comment: Force login to be safe.
+66: Comment: Usually if bio is off, go to login.
+67: Replaces the splash screen with the Login screen.
+68: Exits the function.
+69: Close biometric check.
+70: Close hasUser check.
+71: Empty line.
+72: If no user exists (first time run) or fallthrough.
+73: Navigate to the Login screen.
+74: Close method.
+75: Empty line.
+76: Overrides dispose to clean up resources.
+77: Disposes the animation controller to prevent memory leaks.
+78: Calls super.dispose.
+79: Close dispose.
+80: Empty line.
+81: Overrides the build method to describe the UI.
+82: Retrieves the current theme's color scheme.
+83: Empty line.
+84: Returns a Scaffold.
+85: Body is a Container with a background gradient.
+86: Decoration for the container.
+87: Linear gradient from top-left to bottom-right.
+88: Direction: Alignment.topLeft.
+89: Direction: Alignment.bottomRight.
+90: List of colors.
+91: Primary theme color.
+92: Secondary theme color.
+93: Close colors list.
+94: Close gradient.
+95: Close decoration.
+96: Child is a Center widget.
+97: FadeTransition applies the fade animation to its child.
+98: Linked to _fadeAnimation.
+99: Child is a ScaleTransition for the scaling effect.
+100: Linked to _scaleAnimation.
+101: Child is a Column to stack the logo and text.
+102: Center items vertically.
+103: Children list.
+104: Container for the white icon card.
+105: Inner padding.
+106: Decoration for the card.
+107: White background color.
+108: Rounded corners.
+109: Shadow list for depth.
+110: BoxShadow definition.
+111: Semi-transparent black color.
+112: Blur radius of 30.
+113: Vertical offset of 15.
+114: Close BoxShadow.
+115: Close shadows list.
+116: Close decoration.
+117: Child is a shield icon.
+118: Large shield icon.
+119: Size 80.
+120: Icon color set to primary theme color.
+121: Close Icon.
+122: Close icon Container.
+123: Spacer between icon and title.
+124: App title text "SECURE STEGO".
+125: Text style.
+126: White color.
+127: Large font size.
+128: Extra bold weight.
+129: Wide letter spacing for a modern look.
+130: Close TextStyle.
+131: Close Text.
+132: Small spacer.
+133: Container for the tagline badge.
+134: Padding for the badge.
+135: Decoration with semi-transparent white background.
+136: Lightly opaque white color.
+137: Pill-shaped rounded corners.
+138: Close decoration.
+139: Tagline text "PRIVACY REDEFINED".
+140: Text style.
+141: White color.
+142: Small font size.
+143: Semi-bold weight.
+144: Letter spacing.
+145: Close TextStyle.
+146: Close Text.
+147: Close tagline Container.
+148: Close Column children.
+149: Close Column.
+150: Close ScaleTransition.
+151: Close FadeTransition.
+152: Close Center.
+153: Close Container.
+154: Close Scaffold.
+155: Close build method.
+156: Close State class.

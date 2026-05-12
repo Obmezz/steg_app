@@ -1,0 +1,10 @@
+Line 1-5: Imports for Flutter UI components, state management, and the contact model.
+Line 7: Defines the FingerprintScreen for manual identity verification.
+Line 9: Accepts a ContactModel as a required parameter.
+Line 13: Overrides the build method to display the verification UI.
+Line 17: Sets the screen title to "Verify [Contact Name]".
+Line 25-28: Displays instructional text for the user.
+Line 32-39: Displays the contact's public key fingerprint in a large, selectable format to allow manual comparison.
+Line 43-49: "Mark Verified" button: Updates the contact's verification status in the provider and returns to the previous screen.
+Line 54: Private helper method to format the fingerprint string.
+Line 55-58: Inserts a space every 4 characters to make the hex string easier for humans to read and compare.

@@ -1,0 +1,57 @@
+1: Imports dart:convert for Base64 encoding/decoding.
+2: Imports the core Flutter material design library.
+3: Imports PointyCastle exports for RSA key types.
+4: Empty line.
+5: Defines UiHelpers class for common UI utility methods.
+6: Static method to display a snackbar at the bottom of the screen.
+7: Required context, message, and an optional error flag.
+8: Uses ScaffoldMessenger to manage snackbars.
+9: Returns a SnackBar widget.
+10: Child is a Text widget.
+11: Displayed message.
+12: Styled white and bold.
+13: Close TextStyle.
+14: Close Text.
+15: Red background for errors, green for success.
+16: Floating behavior so it doesn't span full width.
+17: Rounded corners.
+18: Close SnackBar.
+19: Close showSnackBar call.
+20: Close method.
+21: Close class.
+22: Empty line.
+23: Defines KeyHelper class for serializing and deserializing RSA keys.
+24: Empty line.
+25: Static method to convert an RSAPublicKey into a Base64 string.
+26: Formats key components (modulus and exponent) into a pipe-separated string.
+27: Encodes the string bytes as Base64.
+28: Close method.
+29: Empty line.
+30: Static method to recreate an RSAPublicKey from a Base64 string.
+31: Decodes Base64 back into the pipe-separated string.
+32: Splits the string into modulus and exponent parts.
+33: Empty line.
+34: Returns a new RSAPublicKey instance.
+35: Parses the modulus from the first part.
+36: Parses the exponent from the second part.
+37: Close constructor call.
+38: Close method.
+39: Empty line.
+40: Static method to convert an RSAPrivateKey into a Base64 string (Simplified/Mock for demo).
+41: Comment: Basic serialization for demo purposes.
+42: Formats modulus, private exponent, and primes p/q into a pipe-separated string.
+43: Encodes as Base64.
+44: Close method.
+45: Empty line.
+46: Static method to recreate an RSAPrivateKey from a Base64 string.
+47: Decodes Base64 back into the string.
+48: Splits the string into parts.
+49: Empty line.
+50: Returns a new RSAPrivateKey instance.
+51: Parses modulus.
+52: Parses private exponent.
+53: Parses prime P if available (optional for basic RSA).
+54: Parses prime Q if available.
+55: Close constructor call.
+56: Close method.
+57: Close class.

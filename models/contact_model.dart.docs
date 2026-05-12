@@ -1,0 +1,31 @@
+1: Defines the ContactModel class for representing a contact in the app.
+2: Final field for the contact's display name.
+3: Final field for the contact's RSA public key (base64 encoded).
+4: Final field for the unique identity fingerprint derived from the public key.
+5: Mutable boolean indicating if the contact's identity has been verified by the user.
+6: Empty line.
+7: Constructor for ContactModel.
+8: Required name parameter.
+9: Required publicKey parameter.
+10: Required fingerprint parameter.
+11: Optional isVerified parameter, defaults to false.
+12: Close constructor.
+13: Empty line.
+14: Method to convert the ContactModel instance into a Map for database storage.
+15: Returns a Map<String, dynamic>.
+16: Maps the name field.
+17: Maps the publicKey field.
+18: Maps the fingerprint field.
+19: Maps isVerified as an integer (1 for true, 0 for false) for sqflite compatibility.
+20: Close Map.
+21: Close toMap method.
+22: Empty line.
+23: Factory constructor to create a ContactModel instance from a database Map.
+24: Returns a new ContactModel.
+25: Extracts name from map.
+26: Extracts publicKey from map.
+27: Extracts fingerprint from map.
+28: Converts the isVerified integer back to a boolean.
+29: Close ContactModel creation.
+30: Close factory.
+31: Close class.

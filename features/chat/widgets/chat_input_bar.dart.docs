@@ -1,0 +1,23 @@
+Line 1-14: Imports for file I/O, UI, state management, sharing, gallery access, and internal services.
+Line 16: Defines the ChatInputBar as a StatefulWidget.
+Line 23: Initializes the message text controller.
+Line 24: Initializes the service for picking images from the gallery.
+Line 26: Tracks the currently selected image file.
+Line 28: Defines _handleSend to hide the message in the image and process the result.
+Line 30-34: Validates that an image has been selected before proceeding.
+Line 36-39: Validates that a secret message has been typed.
+Line 42-45: Navigates to the ContactSelectionScreen to pick which user the message is for.
+Line 47: Aborts if no contact was selected (e.g., user pressed back).
+Line 50: Retrieves the ChatProvider to perform the heavy lifting.
+Line 51-55: Calls sendMessage, which handles E2E encryption and LSB steganography, returning the final image file.
+Line 58: Shows a dialog to the user once the message is successfully hidden.
+Line 62-73: Option 1: Save the modified image to the device's public photo gallery using the Gal package.
+Line 74-80: Option 2: Open the system share sheet to send the image via external apps like WhatsApp or Telegram.
+Line 85-88: Resets the input fields (clears text and image selection) after a successful operation.
+Line 91-95: Handles any errors during the encryption or encoding process.
+Line 99: Overrides the build method to construct the bar UI.
+Line 101: Retrieves the current language translations.
+Line 102: Wraps the bar in a Container with styling to separate it from the chat history.
+Line 111-120: Icon button to trigger the image picker. Changes color when an image is selected.
+Line 121-129: Text input field for the secret message.
+Line 130-134: Send button that triggers the multi-step _handleSend process.

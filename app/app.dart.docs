@@ -1,0 +1,26 @@
+Line 1: Provides a high-level summary of the file's purpose as the entry point widget.
+Line 2: Imports the core Flutter material library for UI and widget fundamentals.
+Line 3: Imports internationalization support for Material components.
+Line 4: Imports the provider package to access global state.
+Line 5: Imports the LanguageProvider to react to language changes.
+Line 6: Imports the SecurityProvider to react to theme mode changes.
+Line 7: Imports the application's route configuration.
+Line 8: Imports the application's theme definitions.
+Line 10-16: Defines the MyApp widget class with documentation explaining its responsibilities.
+Line 17-18: Standard constructor for the StatelessWidget.
+Line 20-23: Overrides the build method to define the UI structure.
+Line 24-25: Retrieves the LanguageProvider and SecurityProvider instances from the context.
+Line 27: Returns the root MaterialApp widget.
+Line 28: Assigns a static ValueKey to the root to ensure tree stability during significant state changes.
+Line 29: Provides a global NavigatorState key to allow navigation without context.
+Line 30: Provides a global ScaffoldMessengerState key for showing SnackBars globally.
+Line 31: Sets the application's user-facing title.
+Line 32: Applies the light theme configuration.
+Line 33: Applies the dark theme configuration.
+Line 34: Dynamically sets the theme mode (light, dark, or system) based on user settings.
+Line 35: Sets the current locale (English or Amharic) based on user settings.
+Line 36-39: Declares the list of locales supported by the application.
+Line 40-44: Registers localizations delegates to handle translated text for internal Material widgets.
+Line 45: Injects the map of named routes defined in routes.dart.
+Line 46: Defines the first screen to show when the app launches (Splash screen).
+Line 47: Hides the "Debug" banner in the top-right corner.

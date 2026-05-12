@@ -1,0 +1,30 @@
+Line 1-9: Imports Flutter UI, state management, routes, repositories, biometric services, and UI helpers.
+Line 11: Defines the LoginScreen as a StatefulWidget.
+Line 18-21: Declares controllers for username and password fields, and initializes repository/biometric services.
+Line 22-23: Tracks loading state and password visibility.
+Line 25: Defines the _login method for traditional password-based authentication.
+Line 26-30: Validates that both fields are filled.
+Line 32: Sets loading state to true.
+Line 34-37: Attempts to log in using the UserRepository.
+Line 41-43: If successful, updates the UserProvider with the logged-in user and navigates to the Home screen.
+Line 45: Shows an error if credentials are invalid.
+Line 47-51: Handles general errors and resets the loading state.
+Line 54: Defines the _biometricLogin method for fingerprint or PIN/Pattern entry.
+Line 57-58: Checks if the device supports biometric or system-level authentication.
+Line 65: Triggers the system authentication dialog.
+Line 68-70: If authentication succeeds, queries the local database for the first available user account.
+Line 72-73: Updates the UserProvider and redirects to the Home screen.
+Line 75: Shows an error if no account is found on the device.
+Line 78-82: Handles authentication failures.
+Line 85: Overrides the build method to construct the UI.
+Line 86-88: Accesses theme colors, text styles, and localization.
+Line 93: Wraps the content in a SingleChildScrollView for better mobile support.
+Line 97-111: Displays a stylized shield icon as the app logo.
+Line 113-122: Displays the "Welcome" title and the app's tagline.
+Line 124-130: The username input field.
+Line 132-145: The password input field with a visibility toggle button.
+Line 146-158: A "Forgot Password" link that navigates to the recovery screen.
+Line 160-176: The primary "Login" button, showing a loading indicator when processing.
+Line 178-187: The "Use Biometrics" button for quick access.
+Line 189-206: A footer row with a link to the registration screen.
+Line 208-237: A language switcher row allowing users to toggle between English and Amharic, highlighting the current selection.

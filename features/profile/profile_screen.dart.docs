@@ -1,0 +1,23 @@
+Line 1-16: Imports for I/O, JSON, UI, clipboard, state management, QR generation, sharing, and security services.
+Line 18: Defines the ProfileScreen as a StatefulWidget.
+Line 25-34: Initializes services for keys, images, and biometrics. Tracks public key, username, and editing state.
+Line 42: Lifecycle method that loads the user's public key and current profile data.
+Line 55: Defines _saveProfile to persist changes to the username or profile picture via the UserProvider.
+Line 70: Defines _handleBiometricToggle to enable/disable security lock with a mandatory system challenge.
+Line 84-88: Triggers the system authentication dialog (Fingerprint/PIN/Pattern) before enabling the toggle.
+Line 101: Overrides the build method to construct the profile view.
+Line 105: Returns an error message if no user session is active.
+Line 109-119: Configures the AppBar with a toggle button to switch between View and Edit modes.
+Line 124-169: Profile Header Section: Displays the user's profile picture with an optional camera overlay in Edit mode.
+Line 171-185: Displays the username as editable text or a bold label depending on the current mode.
+Line 189-191: Section 1 Header: "Security Info".
+Line 192: Displays a card with biometric/security toggle settings.
+Line 194-279: Section 2: "Public Identity". Displays the public key, its fingerprint, and sharing options.
+Line 208-228: Fingerprint Section: Displays the unique 16-character SHA-256 fingerprint derived from the public key.
+Line 240-251: Public Key Section: Displays the full RSA public key in a selectable, mono-spaced text area.
+Line 253-289: Action Row: Buttons to show QR code, scan other contacts, copy key to clipboard, or share via system sheet.
+Line 300-316: Logout Button: Clears the current session and redirects to the login screen with a distinct error-colored border.
+Line 322: UI helper for the settings card containing the security toggle.
+Line 345: UI helper for standardized section headers.
+Line 358: Helper method to show a dialog containing a generated QR code representing the user's name and public key.
+Line 360-363: Encodes the user's identity as a JSON string to be embedded in the QR image.

@@ -1,0 +1,23 @@
+Line 1: Imports the core Flutter material design library for UI components.
+Line 2: Imports the provider package for dependency injection and state management.
+Line 4: Imports the root MyApp widget from the app directory.
+Line 6-11: Imports various state providers (Chat, Contact, Crypto, User, Language, Security) that handle business logic.
+Line 13-15: Imports cryptographic service implementations for AES, RSA, and HMAC operations.
+Line 17-18: Imports processing pipelines that coordinate encryption and steganography tasks.
+Line 20: Imports the message repository for database interactions.
+Line 22: The main entry point of the Flutter application.
+Line 23: Ensures Flutter framework bindings are initialized before any asynchronous setup.
+Line 25-26: Instantiates Language and Security providers to manage user preferences.
+Line 29-32: Asynchronously loads saved language and security settings from local storage before the UI starts.
+Line 34-36: Initializes low-level cryptographic service instances.
+Line 38: Sets up the EncryptionPipeline, injecting the AES, RSA, and HMAC services.
+Line 39: Initializes the StegoPipeline for hiding data in images.
+Line 41: Creates the CryptoProvider using the encryption pipeline.
+Line 42: Initializes the persistent message repository (database).
+Line 43: Creates the ContactProvider for managing user contacts.
+Line 44: Creates the UserProvider for managing the current user's session.
+Line 46: Starts the Flutter application.
+Line 47-60: Wraps the app in a MultiProvider to make all state objects available throughout the widget tree.
+Line 49-53: Registers existing provider instances using the .value constructor.
+Line 54-58: Dynamically creates the ChatProvider, injecting its required dependencies (Crypto, Stego, and Repo).
+Line 61: Launches the root MyApp widget.

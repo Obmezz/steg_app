@@ -1,0 +1,11 @@
+Line 1: Imports the flutter_secure_storage package for encrypted local data persistence.
+Line 3: Defines the KeyStorage class to manage RSA key persistence.
+Line 5: Initializes a constant instance of FlutterSecureStorage.
+Line 7: Defines the savePrivateKey method to securely store the user's RSA private key.
+Line 8: Writes the private key string to secure storage using the identifier "private".
+Line 11: Defines the savePublicKey method to securely store the user's RSA public key.
+Line 12: Writes the public key string to secure storage using the identifier "public".
+Line 15: Defines the getPrivateKey method to retrieve the stored RSA private key.
+Line 16: Reads and returns the value associated with the "private" key, or null if not found.
+Line 19: Defines the getPublicKey method to retrieve the stored RSA public key.
+Line 20: Reads and returns the value associated with the "public" key, or null if not found.

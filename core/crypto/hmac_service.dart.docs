@@ -1,0 +1,12 @@
+Line 1: Imports the dart:convert library for UTF-8 and Base64 encoding.
+Line 2: Imports the dart:typed_data library for byte-level operations (Uint8List).
+Line 4: Imports the PointyCastle library for cryptographic implementations.
+Line 6: Defines the HMACService class for message authentication.
+Line 9: Defines the generate method which creates an HMAC-SHA256 signature for the given data string using a secret key.
+Line 11: Instantiates the HMac algorithm using SHA-256 with a 64-byte block size.
+Line 12: Initializes the HMAC algorithm with the provided secret key.
+Line 14-16: Converts the input data string to UTF-8 bytes and processes it through the HMAC algorithm.
+Line 18: Base64 encodes the resulting HMAC signature bytes and returns the string.
+Line 21: Defines the verify method which checks if a given signature matches the data and key.
+Line 23: Re-generates the signature for the provided data and key.
+Line 24: Compares the newly generated signature with the provided signature string and returns the result (true if they match).

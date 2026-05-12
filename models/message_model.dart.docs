@@ -1,0 +1,11 @@
+1: Defines the MessageModel class used for internal message representation (not database storage).
+2: Final field for message type (e.g., 'text' or 'image').
+3: Optional field for text content.
+4: Optional field for the path to an image file.
+5: Empty line.
+6: Constructor for MessageModel.
+7: Required type parameter.
+8: Optional text parameter.
+9: Optional imagePath parameter.
+10: Close constructor.
+11: Close class.

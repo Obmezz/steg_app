@@ -1,0 +1,23 @@
+Line 1: Imports the Flutter material library.
+Line 3: Defines the AppTheme class to store static theme configurations.
+Line 4-6: Defines constant colors used across light and dark themes (primary blue, surface color, and card color).
+Line 8: Defines the lightTheme static property.
+Line 9: Enables Material 3 design system.
+Line 10-16: Configures the color scheme from a seed color, overriding primary, surface, and secondary colors.
+Line 17: Sets the default background color for Scaffolds.
+Line 18-25: Configures the default look for Cards, including a border radius of 20 and a subtle border.
+Line 26-37: Configures the AppBar theme with transparency, specific text styles, and centered title disabled.
+Line 38-51: Defines the global style for ElevatedButtons with custom padding, shape, and text styling. Note: 'inherit: false' is used to prevent Material 3 lerp crashes.
+Line 52-62: Defines the global style for OutlinedButtons.
+Line 63-81: Configures default input field styling (TextFields), including borders, fill colors, and floating label behavior.
+Line 82-86: Defines standard text styles for headlines and body text.
+Line 89: Defines the darkTheme static property.
+Line 90: Enables Material 3 for the dark theme.
+Line 91-97: Configures a dark color scheme with appropriate brightness and background colors.
+Line 98: Sets the dark background color for Scaffolds.
+Line 99-106: Configures dark-mode Card styles with an semi-transparent border.
+Line 107-118: Configures the dark-mode AppBar theme.
+Line 119-132: Configures dark-mode ElevatedButtons.
+Line 133-143: Configures dark-mode OutlinedButtons.
+Line 144-162: Configures dark-mode InputDecorations with darker fill colors and adjusted border opacities.
+Line 163-167: Defines dark-mode text styles with white or light grey colors.

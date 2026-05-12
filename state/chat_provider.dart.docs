@@ -1,0 +1,102 @@
+1: Imports dart:io for file handling.
+2: Imports dart:convert for JSON encoding/decoding.
+3: Imports the core Flutter material design library.
+4: Empty line.
+5: Imports MessageModel for UI representation.
+6: Imports EncryptedPayload for handling cryptographic components.
+7: Empty line.
+8: Imports StegoPipeline for hiding/extracting data in images.
+9: Imports MessageRepository for database persistence of chat history.
+10: Imports CryptoProvider to access encryption/decryption logic.
+11: Empty line.
+12: Imports PointyCastle exports for RSA key types.
+13: Empty line.
+14: Defines ChatProvider class extending ChangeNotifier for orchestrating the message pipeline.
+15: Empty line.
+16: Final field for the CryptoProvider dependency.
+17: Final field for the StegoPipeline dependency.
+18: Final field for the MessageRepository dependency.
+19: Empty line.
+20: Constructor taking dependencies via parameter injection.
+21: Empty line.
+22: List of messages to be displayed in the UI.
+23: Empty line.
+24: Async method to load chat history from the database.
+25: Fetches records from the repository.
+26: Clears the current in-memory message list.
+27: Iterates through each record in history.
+28: Adds a new MessageModel to the list.
+29: Sets the message type (sent/received).
+30: Logic for displaying text: Show actual text for received, or a placeholder for sent secrets.
+31: Sets the image path associated with the message.
+32: Close MessageModel creation.
+33: Close for loop.
+34: Notifies UI widgets to rebuild with loaded history.
+35: Close method.
+36: Empty line.
+37: Documentation comment: SEND MESSAGE (FULL PIPELINE).
+38: Async method to execute the full sending flow.
+39: The secret text to hide.
+40: Recipient's RSA public key for encryption.
+41: The cover image file.
+42: Close parameters.
+43: Empty line.
+44: Step 1: Encrypt the message using the crypto service.
+45: Calls crypto.encrypt.
+46: Message content.
+47: Recipient's key.
+48: Close encryption.
+49: Empty line.
+50: Step 2: Convert the structured EncryptedPayload into a JSON string.
+51: Uses jsonEncode on the payload's map representation.
+52: Empty line.
+53: Step 3: Hide the JSON string inside the cover image pixels.
+54: Calls stego.encode which returns a new File containing the stego-image.
+55: Empty line.
+56: Step 4: Save the operation to the message history database.
+57: Stores the payload JSON and the path to the resulting image.
+58: Empty line.
+59: Step 5: Update the UI message list.
+60: Adds a 'sent' message model.
+61: Sets type.
+62: Sets image path.
+63: Close MessageModel.
+64: Close list add.
+65: Empty line.
+66: Notifies listeners.
+67: Returns the resulting stego-image file.
+68: Close method.
+69: Empty line.
+70: Documentation comment: RECEIVE MESSAGE (FULL PIPELINE).
+71: Async method to execute the full extraction and decryption flow.
+72: The stego-image file containing hidden data.
+73: User's own RSA private key for decryption.
+74: Close parameters.
+75: Empty line.
+76: Step 1: Extract the hidden payload string from the image.
+77: Calls stego.decode.
+78: Empty line.
+79: Step 2: Parse the extracted JSON string back into an EncryptedPayload object.
+80: Decodes JSON to map.
+81: Creates EncryptedPayload instance from map.
+82: Empty line.
+83: Step 3: Decrypt the extracted payload using the private key.
+84: Calls crypto.decrypt.
+85: Extracted payload.
+86: Recipient's private key.
+87: Close decryption.
+88: Empty line.
+89: Step 4: Save the received message to the database.
+90: Inserts the plain text and image path into the repository.
+91: Empty line.
+92: Step 5: Update the UI message list.
+93: Adds a 'received' message model.
+94: Sets type.
+95: Sets plain text.
+96: Sets image path.
+97: Close MessageModel.
+98: Close list add.
+99: Empty line.
+100: Notifies listeners.
+101: Close method.
+102: Close class.

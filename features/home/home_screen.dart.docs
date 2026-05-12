@@ -1,0 +1,17 @@
+Line 1-8: Imports for I/O, UI components, state management, and application services.
+Line 10: Defines the HomeScreen as a stateless widget representing the main dashboard.
+Line 14: Instantiates the ImageService to handle gallery picking.
+Line 15-18: Accesses theme, language, and security providers.
+Line 21-52: Configures the AppBar with a title and action buttons for theme toggling, profile access, and settings.
+Line 24-34: Theme toggle: Switches between light and dark modes via the SecurityProvider.
+Line 42-45: Profile button: Navigates to the user's profile and QR generation screen.
+Line 55: Main body wrapped in a SingleChildScrollView.
+Line 62-81: Header section: Displays the app's title and welcoming tagline.
+Line 84-110: Main action cards: "Send Secret" and "Reveal Secret".
+Line 86-92: Send Secret: Navigates directly to the chat interface to begin a new stego process.
+Line 94-108: Reveal Secret: Prompts user to pick an image from the gallery, then passes that image as an argument to the chat screen for decoding.
+Line 113-145: Quick Actions row: A horizontal layout of smaller buttons for common tasks (Contacts, History, QR Scanning, Help).
+Line 150: Helper method to show a detailed Help dialog with usage steps and security warnings.
+Line 165-171: Step 3 warning: Advises users that social media apps (like WhatsApp) might strip stego data due to compression.
+Line 192: Inner class _QuickAction: Defines the UI for the small square action buttons in the quick row.
+Line 223: Inner class _HomeCard: Defines the UI for the large primary action cards, featuring a rounded container, shadow, and icon.

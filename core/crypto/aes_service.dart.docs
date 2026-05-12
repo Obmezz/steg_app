@@ -1,0 +1,23 @@
+Line 1: Imports the dart:convert library for UTF-8 and Base64 encoding/decoding.
+Line 2: Imports the dart:math library to access secure random number generation.
+Line 3: Imports the dart:typed_data library for working with byte lists (Uint8List).
+Line 5: Imports the PointyCastle library, which provides cryptographic algorithms for Dart.
+Line 7: Defines the AESService class responsible for symmetric encryption.
+Line 10: Defines the generateKey method to create a 256-bit (32-byte) AES key.
+Line 11: Creates a cryptographically secure random number generator.
+Line 12-14: Generates a list of 32 random bytes and converts it to a Uint8List.
+Line 17: Defines the generateIV method to create a 128-bit (16-byte) Initialization Vector.
+Line 18: Creates a secure random number generator.
+Line 19-21: Generates a list of 16 random bytes and converts it to a Uint8List.
+Line 24: Defines the encrypt method which takes plaintext and a key, returning a map with the ciphertext and IV.
+Line 26: Generates a new random IV for this specific encryption operation.
+Line 28: Instantiates a PaddedBlockCipher using AES in CBC mode with PKCS7 padding.
+Line 29-35: Initializes the cipher for encryption (true) using the provided key and the generated IV.
+Line 37-39: Converts the plaintext string to bytes and processes it through the cipher.
+Line 41-44: Returns a map containing the base64-encoded ciphertext and the base64-encoded IV.
+Line 47: Defines the decrypt method which takes ciphertext, a key, and a base64-encoded IV.
+Line 49: Decodes the base64 IV string back into a Uint8List.
+Line 51: Instantiates the PaddedBlockCipher with the same AES/CBC/PKCS7 configuration.
+Line 52-58: Initializes the cipher for decryption (false) using the key and the decoded IV.
+Line 60: Decodes the base64 ciphertext and processes it through the cipher to retrieve the original bytes.
+Line 62: Converts the decrypted bytes back into a UTF-8 string and returns it.

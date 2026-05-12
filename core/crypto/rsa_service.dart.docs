@@ -1,0 +1,22 @@
+Line 1: Imports the dart:math library for secure random number generation.
+Line 2: Imports the dart:typed_data library for byte-level operations.
+Line 4: Imports the PointyCastle cryptographic library.
+Line 6: Defines the RSAService class for asymmetric encryption operations.
+Line 9: Defines the generateKeyPair method to create a new 2048-bit RSA public/private key pair.
+Line 10: Initializes the KeyGenerator specifically for the RSA algorithm.
+Line 11: Creates a FortunaRandom instance, which is a cryptographically strong PRNG.
+Line 14: Allocates a 32-byte (256-bit) buffer for the random seed.
+Line 15: Accesses the secure system random generator.
+Line 17-19: Fills the seed buffer with 32 random bytes from the secure generator.
+Line 21: Seeds the Fortuna PRNG with the generated random bytes.
+Line 23-33: Initializes the RSA key generator with parameters: public exponent 65537, 2048-bit strength, and the seeded random source.
+Line 35: Executes the key generation process.
+Line 37-40: Casts the generic asymmetric key pair components into specific RSAPublicKey and RSAPrivateKey types and returns them.
+Line 43: Defines the encrypt method to secure small data (like an AES key) using an RSA public key.
+Line 44: Instantiates the RSAEngine.
+Line 45: Initializes the engine for encryption (true) with the provided public key.
+Line 47: Processes the input data through the RSA algorithm and returns the encrypted bytes.
+Line 50: Defines the decrypt method to retrieve data using an RSA private key.
+Line 51: Instantiates the RSAEngine.
+Line 52: Initializes the engine for decryption (false) with the provided private key.
+Line 54: Processes the ciphertext and returns the original decrypted bytes.

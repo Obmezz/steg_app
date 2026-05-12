@@ -1,0 +1,28 @@
+Line 1: Imports the dart:convert library for UTF-8 encoding.
+Line 2: Imports the dart:math library for generating a deterministic pixel path.
+Line 3: Imports the image package to manipulate pixel color values.
+Line 5: Defines the LSBEncoder class for hiding data in images.
+Line 6: Sets a constant seed to ensure the encoding path is reproducible.
+Line 9: Defines the encode method which takes an image and a string payload.
+Line 10-11: Converts the payload string to UTF-8 bytes and then into a list of individual bits.
+Line 14-15: Prepares a 32-bit header containing the payload length and prepends it to the payload bits.
+Line 17: Initializes a Random generator with the fixed seed.
+Line 18: Calculates the total pixel count.
+Line 20-30: Documentation/Comments explaining the choice of a deterministic path over shuffling to avoid memory overhead.
+Line 32: Initializes the index to track which bit is currently being embedded.
+Line 37-38: Calculates starting coordinates (x, y) based on the seed.
+Line 40: Iterates through pixels in the image.
+Line 41: Stops once all bits (header + payload) have been embedded.
+Line 43-44: Calculates the current pixel's (x, y) coordinates sequentially from the start offset.
+Line 46: Retrieves the current pixel's color data.
+Line 48-50: Converts pixel channel values to integers.
+Line 52-54: Embeds the next bit into the Red channel's LSB.
+Line 55-57: Embeds the next bit into the Green channel's LSB (if more bits remain).
+Line 58-60: Embeds the next bit into the Blue channel's LSB (if more bits remain).
+Line 62: Updates the pixel in the image with the new modified color values.
+Line 67: Returns the modified image with hidden data.
+Line 70: Helper method to convert a list of bytes into a flat list of bits.
+Line 72-74: Iterates through each byte and each bit within that byte.
+Line 79: Helper method to convert an integer (length header) into a list of 32 bits.
+Line 83: Helper method to set the least significant bit of a value.
+Line 84: Clears the lowest bit of the value using a mask (0xFE) and ORs it with the target bit.

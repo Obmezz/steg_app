@@ -1,0 +1,23 @@
+Line 1: Imports the dart:convert library for UTF-8 decoding.
+Line 2: Imports the dart:math library for deterministic random access.
+Line 3: Imports the image package to process pixel data.
+Line 5: Defines the LSBDecoder class for extracting hidden data.
+Line 6: Sets a constant seed to ensure the extraction follows the same pixel path as the encoding.
+Line 8: Defines the decode method which takes an image and returns the hidden string.
+Line 9: Initializes a Random generator with the fixed seed.
+Line 10: Calculates the total number of pixels available in the image.
+Line 12-13: Determines the starting coordinates (x, y) based on the seed.
+Line 15: Initializes a list to accumulate bits extracted from pixels.
+Line 18: Iterates through pixels following a deterministic sequence.
+Line 19-20: Calculates the current pixel's (x, y) coordinates.
+Line 22: Retrieves the color values for the current pixel.
+Line 24-26: Extracts the least significant bit (LSB) from the Red, Green, and Blue channels.
+Line 28-33: Checks if enough bits have been collected to read the 32-bit length header and the subsequent data.
+Line 36: Converts the first 32 bits into an integer representing the payload length in bits.
+Line 37: Extracts the relevant bits for the payload based on the parsed length.
+Line 38: Converts the collected payload bits back into a list of bytes.
+Line 40: Decodes the bytes into a UTF-8 string and returns it.
+Line 43: Helper method to convert a list of bits into a single integer.
+Line 45-47: Iterates through bits, shifting them into the integer value.
+Line 51: Helper method to group a list of bits into 8-bit bytes.
+Line 53-61: Iterates through the bit list, grouping every 8 bits into a byte and adding it to the result list.

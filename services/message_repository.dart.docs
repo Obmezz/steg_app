@@ -1,0 +1,82 @@
+1: Imports sqflite for local database management.
+2: Imports path utility for database file path joining.
+3: Empty line.
+4: Defines MessageRepository class for handling chat messages and contact storage.
+5: Empty line.
+6: Static singleton instance for the chat/contacts database.
+7: Empty line.
+8: Getter for the database, initializes if it's null.
+9: Uses null-aware assignment to call _init().
+10: Returns the database instance.
+11: Close method.
+12: Empty line.
+13: Private async method to initialize the SQLite database file.
+14: Empty line.
+15: Joins the system database path with 'chat.db'.
+16: Empty line.
+17: Opens the database.
+18: Database path.
+19: Current version (v3 added imagePath to messages).
+20: Callback for first-time creation.
+21: Executes SQL to create the messages table.
+22-27: SQL: id (primary key), data (text/payload), type (sent/received), and imagePath.
+28: Close SQL statement.
+29: Executes SQL to create the contacts table.
+30-35: SQL: name (primary key), publicKey, fingerprint, and isVerified integer.
+36: Close SQL statement.
+37: Close onCreate.
+38: Callback for schema upgrades.
+39: If upgrading from v1 to v2, creates the contacts table.
+40-47: SQL: CREATE TABLE contacts...
+48: Close v1 check.
+49: If upgrading from v2 to v3, adds imagePath column to messages.
+50: SQL: ALTER TABLE messages...
+51: Close v2 check.
+52: Close onUpgrade.
+53: Close openDatabase.
+54: Close _init method.
+55: Empty line.
+56: Comment: Contacts CRUD methods.
+57: Async method to insert a contact.
+58: Gets the database instance.
+59: Inserts into 'contacts' table, replacing if the name already exists.
+60: Close method.
+61: Empty line.
+62: Async method to fetch all contacts.
+63: Gets the database instance.
+64: Queries the 'contacts' table and returns all rows.
+65: Close method.
+66: Empty line.
+67: Async method to delete a contact by name.
+68: Gets the database instance.
+69: Deletes from 'contacts' where name matches.
+70: Close method.
+71: Empty line.
+72: Async method to update an existing contact record.
+73: Gets the database instance.
+74: Updates the 'contacts' table record matching oldName.
+75: Close method.
+76: Empty line.
+77: Async method to insert a chat message record.
+78: Gets the database instance.
+79: Empty line.
+80: Inserts into 'messages' table.
+81: Target table.
+82: Map of data.
+83: Plain text or payload JSON.
+84: Message type (sent/received).
+85: Path to the associated image.
+86: Close map.
+87: Close insert.
+88: Close method.
+89: Empty line.
+90: Async method to fetch all messages, ordered newest first.
+91: Gets the database instance.
+92: Queries 'messages' with descending ID order.
+93: Close method.
+94: Empty line.
+95: Async method to delete all messages (Wipe history).
+96: Gets the database instance.
+97: Deletes every row from 'messages'.
+98: Close method.
+99: Close class.

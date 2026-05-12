@@ -1,0 +1,19 @@
+Line 1-10: Imports for file handling, UI, state management, sharing, and utility helpers.
+Line 12: Defines the HistoryScreen as a StatefulWidget.
+Line 20: Lifecycle method that ensures message history is loaded from the database once the widget is mounted.
+Line 28: Overrides the build method to construct the message history list.
+Line 31: Accesses the theme color scheme.
+Line 32-41: Configures the AppBar with a clear history button.
+Line 42-101: Uses a Consumer to automatically rebuild the list when the ChatProvider updates.
+Line 45-56: Displays an empty state UI if no messages are found in the history.
+Line 58-100: Builds a scrollable ListView containing cards for each past message.
+Line 66-73: Dynamically styles the card based on whether the message was sent or received.
+Line 75-91: Displays a thumbnail if the message has an associated image, otherwise shows a generic box icon.
+Line 92-95: Shows the message status (Sent/Received).
+Line 96-100: Shows a preview of the decrypted text or a placeholder for encrypted data.
+Line 106: Helper method to show detailed information about a selected history item in a dialog.
+Line 115-121: Displays the image associated with the message if it still exists on disk.
+Line 122-138: Displays the full decrypted text in a scrollable container.
+Line 142-154: Provides action buttons to share the image or attempt to extract data again.
+Line 158: Helper method for technical extraction: manually runs the stego decoder on a historical image.
+Line 184: Helper method to show a confirmation dialog before clearing all messages from the database.

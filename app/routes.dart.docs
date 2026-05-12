@@ -1,0 +1,10 @@
+Line 1: Imports the Flutter material library.
+Line 2-12: Imports all screen widgets from various feature directories (chat, contacts, auth, home, profile, settings, splash, history).
+Line 14: Defines the static Routes class to centralize navigation logic.
+Line 15: Creates a global key for the NavigatorState to enable contextless navigation.
+Line 16: Creates a global key for the ScaffoldMessengerState to show SnackBars without a BuildContext.
+Line 17-27: Defines constant string identifiers for each route in the application.
+Line 29: Defines the mapping between route names and their corresponding widget builders.
+Line 30-40: Maps each string constant to a constructor call for its respective Screen widget.
+Line 41: Ends the routes map definition.
+Line 42: Ends the Routes class definition.

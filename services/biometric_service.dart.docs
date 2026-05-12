@@ -1,0 +1,51 @@
+1: Imports local_auth for biometric and device authentication.
+2: Imports services for handling PlatformException.
+3: Imports foundation for debugging/printing.
+4: Empty line.
+5: Defines BiometricService class to abstract local authentication logic.
+6: Instantiates the LocalAuthentication utility.
+7: Empty line.
+8: Documentation comment: Checks if any form of device authentication is available.
+9: Async method to verify if the device can perform any secure authentication.
+10: Try-catch block for platform-level errors.
+11: Checks if biometric sensors are available.
+12: Checks if the device OS version supports local_auth features.
+13: Returns true if either biometrics or general device security (PIN/Pass) is available.
+14: Catches exceptions if the hardware or OS refuses the check.
+15: Prints error to console for debugging.
+16: Returns false as a safe fallback.
+17: Close catch.
+18: Close method.
+19: Empty line.
+20: Documentation comment: Checks if actual biometric hardware is available and enrolled.
+21: Async method to check for specific biometric types (Fingerprint/Face).
+22: Try-catch block.
+23: Fetches the list of enrolled biometric types.
+24: Returns true if there is at least one enrolled biometric.
+25: Catches platform errors.
+26: Prints error.
+27: Returns false.
+28: Close catch.
+29: Close method.
+30: Empty line.
+31: Async method to perform the actual user authentication.
+32: Try-catch block.
+33: First, checks if authentication is even possible on this device.
+34: Prints warning if not.
+35: Returns false.
+36: Close check.
+37: Empty line.
+38: Triggers the system authentication prompt.
+39: Message shown to the user in the system dialog.
+40: Authentication options configuration.
+41: Keeps authentication alive if app goes to background during the process.
+42: Set to false to allow fallback to PIN/Pattern/Password if biometrics fail or are missing.
+43: Allows the system to show standard error dialogs if something goes wrong.
+44: Close options.
+45: Close authenticate call.
+46: Catches platform errors (e.g., user cancels, hardware busy).
+47: Prints error.
+48: Returns false.
+49: Close catch.
+50: Close method.
+51: Close class.

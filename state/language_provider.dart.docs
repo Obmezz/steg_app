@@ -1,0 +1,38 @@
+1: Imports the core Flutter material design library.
+2: Imports shared_preferences for persistent storage of language settings.
+3: Empty line.
+4: Defines LanguageProvider class extending ChangeNotifier for state management.
+5: Static constant for the SharedPreferences key used to store the language choice.
+6: Private variable holding the current active Locale, defaulting to English ('en').
+7: Empty line.
+8: Getter for the current locale.
+9: Empty line.
+10: Empty constructor for LanguageProvider.
+11: Empty line.
+12: Async method to load saved language settings from disk on app startup.
+13: Gets the SharedPreferences instance.
+14: Retrieves the language code from preferences, defaulting to 'en' if not set.
+15: Updates the private _currentLocale variable.
+16: Notifies widgets to rebuild with the new locale.
+17: Close method.
+18: Empty line.
+19: Async method to change the app language and save the choice.
+20: Updates the private _currentLocale variable immediately.
+21: Gets the SharedPreferences instance.
+22: Persists the new language code to disk.
+23: Notifies widgets to update UI text.
+24: Close method.
+25: Empty line.
+26: Helper method for translation.
+27: Returns the translated string for a given key based on the current locale, or the key itself if not found.
+28: Close method.
+29: Empty line.
+30: Static map containing all localized strings for 'en' (English) and 'am' (Amharic).
+31: Start of English translations.
+32-155: Key-value pairs for various UI elements, prompts, and error messages in English.
+156: Close English translations.
+157: Start of Amharic translations.
+158-281: Key-value pairs for the same elements translated into Amharic.
+282: Close Amharic translations.
+283: Close translations map.
+284: Close class.
