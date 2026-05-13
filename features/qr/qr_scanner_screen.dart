@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../models/contact_model.dart';
 import '../../core/security/fingerprint.dart';
+import '../../state/contact_provider.dart';
 
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
@@ -14,15 +16,15 @@ class QRScannerScreen extends StatefulWidget {
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
   bool _isScanned = false;
-  String? _latestCode;
   late MobileScannerController controller;
 
   @override
   void initState() {
     super.initState();
     controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.noDuplicates,
+      detectionSpeed: DetectionSpeed.normal,
       facing: CameraFacing.back,
+      formats: [BarcodeFormat.qrCode],
     );
   }
 
@@ -32,35 +34,30 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     super.dispose();
   }
 
-  void _handleCapture() {
-    if (_latestCode == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("No QR code detected yet. Point the camera at a QR code."),
-          duration: Duration(seconds: 1),
-        ),
-      );
-      return;
-    }
+  Future<void> _handleCapture(String code) async {
     if (_isScanned) return;
-    _isScanned = true;
+    
+    setState(() {
+      _isScanned = true;
+    });
 
     try {
       ContactModel contact;
-      // Attempt to parse JSON if it's from our QR generator
+      
       try {
-        final data = jsonDecode(_latestCode!);
+        // Try parsing JSON first
+        final data = jsonDecode(code);
         final fingerprint = Fingerprint.generate(data["publicKey"]);
         contact = ContactModel(
-          name: data["name"],
+          name: data["name"] ?? "Unknown",
           publicKey: data["publicKey"],
           fingerprint: fingerprint,
           isVerified: true,
         );
       } catch (_) {
-        // Fallback to pipe-separated or raw key
-        final parts = _latestCode!.split('|');
-        if (parts.length >= 2) {
+        // Fallback: Check if it's a name|key format or raw key
+        if (code.contains('|')) {
+          final parts = code.split('|');
           contact = ContactModel(
             name: parts[0],
             publicKey: parts[1],
@@ -70,41 +67,56 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         } else {
           contact = ContactModel(
             name: "New Contact",
-            publicKey: _latestCode!,
-            fingerprint: Fingerprint.generate(_latestCode!),
+            publicKey: code,
+            fingerprint: Fingerprint.generate(code),
             isVerified: true,
           );
         }
       }
 
+      // Add to provider immediately so it's saved to DB
       if (mounted) {
-        Navigator.pop(context, contact);
+        await context.read<ContactProvider>().addContact(contact);
+        if (mounted) {
+          Navigator.pop(context, contact);
+        }
       }
     } catch (e) {
-      _isScanned = false;
-      debugPrint("Error parsing QR: $e");
+      if (mounted) {
+        setState(() {
+          _isScanned = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Invalid QR Code: $e")),
+        );
+      }
     }
   }
 
   Future<void> _scanFromGallery() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    if (image == null) return;
+      if (image == null) return;
 
-    final BarcodeCapture? capture = await controller.analyzeImage(image.path);
-    if (capture != null && capture.barcodes.isNotEmpty) {
-      final code = capture.barcodes.first.rawValue;
-      if (code != null) {
-        setState(() {
-          _latestCode = code;
-        });
-        _handleCapture();
+      final BarcodeCapture? capture = await controller.analyzeImage(image.path);
+      if (capture != null && capture.barcodes.isNotEmpty) {
+        final code = capture.barcodes.first.rawValue;
+        if (code != null) {
+          await _handleCapture(code);
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No QR code found in the selected image")),
+          );
+        }
       }
-    } else {
+    } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No QR code found in the selected image")),
+          SnackBar(content: Text("Gallery error: $e")),
         );
       }
     }
@@ -113,8 +125,12 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Scan Public Key"),
+        title: const Text("Scan Public Key", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black54,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
             icon: const Icon(Icons.image_outlined),
@@ -122,150 +138,97 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             onPressed: _scanFromGallery,
           ),
           IconButton(
-            color: Colors.white,
             icon: const Icon(Icons.flash_on),
-            iconSize: 28.0,
+            tooltip: "Toggle Flash",
             onPressed: () => controller.toggleTorch(),
           ),
           IconButton(
-            color: Colors.white,
             icon: const Icon(Icons.flip_camera_ios_rounded),
-            iconSize: 28.0,
+            tooltip: "Switch Camera",
             onPressed: () => controller.switchCamera(),
           ),
         ],
       ),
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           MobileScanner(
             controller: controller,
             onDetect: (capture) {
-              final List<Barcode> barcodes = capture.barcodes;
-              for (final barcode in barcodes) {
-                final String? code = barcode.rawValue;
-                if (code != null && code.isNotEmpty) {
-                  setState(() {
-                    _latestCode = code;
-                  });
-                }
+              final barcode = capture.barcodes.firstOrNull;
+              if (barcode != null && barcode.rawValue != null && !_isScanned) {
+                _handleCapture(barcode.rawValue!);
               }
             },
           ),
-          // Camera icon overlay
-          Positioned(
-            top: 20,
-            left: 0,
-            right: 0,
-            child: Column(
+          
+          // Scanner Overlay (Cutout)
+          ColorFiltered(
+            colorFilter: const ColorFilter.mode(
+              Colors.black54,
+              BlendMode.srcOut,
+            ),
+            child: Stack(
               children: [
-                Icon(
-                  Icons.camera_alt_rounded,
-                  color: Colors.white.withOpacity(0.5),
-                  size: 40,
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    backgroundBlendMode: BlendMode.dstOut,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  "CAMERA ACTIVE",
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.5),
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                    fontSize: 10,
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 250,
+                    width: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          // QR Frame
-          Center(
+
+          // Border for the cutout
+          Align(
+            alignment: Alignment.center,
             child: Container(
-              width: 250,
               height: 250,
+              width: 250,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: _latestCode != null ? Colors.green : Colors.white,
-                  width: _latestCode != null ? 4 : 2,
+                  color: _isScanned ? Colors.green : Colors.white,
+                  width: 4,
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: _latestCode != null
+              child: _isScanned
                   ? const Center(
-                      child: Icon(Icons.check_circle, color: Colors.green, size: 50),
+                      child: CircularProgressIndicator(color: Colors.green),
                     )
                   : null,
             ),
           ),
-          // Capture Button Area
+
+          // Instructions
           Positioned(
-            bottom: 40,
+            bottom: 100,
             left: 0,
             right: 0,
-            child: Column(
-              children: [
-                if (_latestCode != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.check_circle, color: Colors.white, size: 16),
-                          SizedBox(width: 8),
-                          Text(
-                            "QR CODE READY",
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                GestureDetector(
-                  onTap: _handleCapture,
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: _latestCode == null ? Colors.white54 : Colors.white,
-                        width: 4,
-                      ),
-                    ),
-                    child: Center(
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _latestCode == null 
-                              ? Colors.white.withOpacity(0.3) 
-                              : Colors.white,
-                        ),
-                        child: Icon(
-                          Icons.qr_code_scanner,
-                          color: _latestCode == null ? Colors.white70 : Colors.black,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ),
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  _latestCode == null ? "SCANNING..." : "TAP TO CAPTURE",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                  ),
+                child: Text(
+                  _isScanned ? "Processing..." : "Align QR code within the frame",
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-              ],
+              ),
             ),
           ),
         ],
