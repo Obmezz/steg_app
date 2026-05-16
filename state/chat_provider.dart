@@ -25,11 +25,12 @@ class ChatProvider extends ChangeNotifier {
     final history = await repo.getMessages();
     messages.clear();
     for (var m in history) {
+      final type = m['type'] as String;
       messages.add(
         MessageModel(
-          type: m['type'],
-          text: m['type'] == 'received' ? m['data'] : "Sent Secret Payload",
-          imagePath: m['imagePath'],
+          type: type,
+          text: type == 'received' ? m['data'] as String? : "Sent Secret Payload",
+          imagePath: m['imagePath'] as String?,
         ),
       );
     }

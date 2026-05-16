@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         Icon(
                           Icons.lock_person_rounded,
                           size: 64,
-                          color: colorScheme.primary.withOpacity(0.1),
+                          color: colorScheme.primary.withValues(alpha: 0.1),
                         ),
                         const SizedBox(height: 16),
                         Text(

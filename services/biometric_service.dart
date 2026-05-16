@@ -37,11 +37,8 @@ class BiometricService {
 
       return await auth.authenticate(
         localizedReason: 'Please authenticate to proceed securely',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: false, // This is key: it allows fallback to PIN/Pattern/Password
-          useErrorDialogs: true,
-        ),
+        biometricOnly: false, // This is key: it allows fallback to PIN/Pattern/Password
+        persistAcrossBackgrounding: true, // Equivalent to stickyAuth
       );
     } on PlatformException catch (e) {
       debugPrint("BiometricService: Authentication error: $e");

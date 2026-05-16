@@ -10,7 +10,6 @@ import '../../state/language_provider.dart';
 import '../../core/security/key_storage.dart';
 import '../../services/image_service.dart';
 import '../../services/biometric_service.dart';
-import '../../app/routes.dart';
 import '../../state/security_provider.dart';
 import '../../core/security/fingerprint.dart';
 import '../../utils/helpers.dart';
@@ -200,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: colorScheme.surfaceContainerLow,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
                   ],
                 ),
                 child: Column(
@@ -289,7 +288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         IconButton.filledTonal(
                           onPressed: _publicKey == null
                               ? null
-                              : () => Share.share(_publicKey!, subject: 'My Public Key'),
+                              : () => SharePlus.instance.share(ShareParams(text: _publicKey!, subject: 'My Public Key')),
                           icon: const Icon(Icons.share_rounded),
                         ),
                       ],
@@ -337,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Column(

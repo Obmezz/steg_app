@@ -1,6 +1,0 @@
-Line 1: Imports the dart:convert library for UTF-8 and Base64 encoding.
-Line 2: Imports the crypto package which provides hash functions like SHA-256.
-Line 4: Defines the Fingerprint class used for creating unique identifiers for public keys.
-Line 7: Defines the static generate method which creates a human-readable fingerprint from a public key string.
-Line 9: Encodes the public key string as UTF-8 bytes and calculates its SHA-256 hash.
-Line 11: Converts the binary hash to a hexadecimal string and returns the first 16 characters as a "short fingerprint".

@@ -66,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 if (val) {
                   final canAuth = await _bio.isAuthAvailable();
                   if (!canAuth) {
-                    if (mounted) {
+                    if (context.mounted) {
                       UiHelpers.showSnackBar(context, lang.translate('auth_failed'), isError: true);
                     }
                     return;
@@ -108,14 +108,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     
     // 1. Biometrics
     final bioAuth = await _bio.authenticate();
-    if (!mounted) return;
+    if (!context.mounted) return;
     if (!bioAuth) {
       UiHelpers.showSnackBar(context, lang.translate('auth_failed'), isError: true);
       return;
     }
 
     // 2. Security Question
-    if (mounted) {
+    if (context.mounted) {
       final answer = await showDialog<String>(
         context: context,
         builder: (dialogContext) {
@@ -143,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       );
 
-      if (mounted) {
+      if (context.mounted) {
         if (answer != null && answer == user['securityAnswer']) {
           verified = true;
         } else if (answer != null) {
@@ -152,7 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     }
 
-    if (verified && mounted) {
+    if (verified && context.mounted) {
       // Show password change form
       showDialog(
         context: context,
@@ -282,40 +282,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(lang.translate('language')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              onTap: () {
-                lang.setLanguage('en');
-                Navigator.pop(context);
-              },
-              leading: Radio<String>(
-                value: 'en',
-                groupValue: lang.currentLocale.languageCode,
-                onChanged: (val) {
-                  if (val != null) lang.setLanguage(val);
+        content: RadioGroup<String>(
+          groupValue: lang.currentLocale.languageCode,
+          onChanged: (val) {
+            if (val != null) lang.setLanguage(val);
+            Navigator.pop(context);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                onTap: () {
+                  lang.setLanguage('en');
                   Navigator.pop(context);
                 },
+                leading: const Radio<String>(
+                  value: 'en',
+                ),
+                title: Text(lang.translate('english')),
               ),
-              title: Text(lang.translate('english')),
-            ),
-            ListTile(
-              onTap: () {
-                lang.setLanguage('am');
-                Navigator.pop(context);
-              },
-              leading: Radio<String>(
-                value: 'am',
-                groupValue: lang.currentLocale.languageCode,
-                onChanged: (val) {
-                  if (val != null) lang.setLanguage(val);
+              ListTile(
+                onTap: () {
+                  lang.setLanguage('am');
                   Navigator.pop(context);
                 },
+                leading: const Radio<String>(
+                  value: 'am',
+                ),
+                title: Text(lang.translate('amharic')),
               ),
-              title: Text(lang.translate('amharic')),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

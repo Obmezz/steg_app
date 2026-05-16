@@ -36,7 +36,7 @@ class MessageBubble extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -81,13 +81,13 @@ class MessageBubble extends StatelessWidget {
                           Icon(
                             Icons.lock_outline,
                             size: 16,
-                            color: isMe ? colorScheme.onPrimary.withOpacity(0.7) : colorScheme.onSurfaceVariant.withOpacity(0.7),
+                            color: isMe ? colorScheme.onPrimary.withValues(alpha: 0.7) : colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                           ),
                           const SizedBox(width: 8),
                           Text(
                             "Encrypted Data",
                             style: TextStyle(
-                              color: isMe ? colorScheme.onPrimary.withOpacity(0.7) : colorScheme.onSurfaceVariant.withOpacity(0.7),
+                              color: isMe ? colorScheme.onPrimary.withValues(alpha: 0.7) : colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                               fontStyle: FontStyle.italic,
                             ),
                           ),

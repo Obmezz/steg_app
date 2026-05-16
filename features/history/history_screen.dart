@@ -67,7 +67,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
               return Card(
                 elevation: 0,
-                color: isSent ? colorScheme.primaryContainer.withOpacity(0.3) : colorScheme.secondaryContainer.withOpacity(0.3),
+                color: isSent ? colorScheme.primaryContainer.withValues(alpha: 0.3) : colorScheme.secondaryContainer.withValues(alpha: 0.3),
                 margin: const EdgeInsets.only(bottom: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -159,7 +159,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         actions: [
           if (msg.imagePath != null && File(msg.imagePath!).existsSync())
             TextButton(
-              onPressed: () => Share.shareXFiles([XFile(msg.imagePath!)]),
+              onPressed: () => SharePlus.instance.share(ShareParams(files: [XFile(msg.imagePath!)])),
               child: Text(lang.translate('share')),
             ),
           if (isSent && msg.imagePath != null)

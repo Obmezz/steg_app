@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              color: colorScheme.primary.withOpacity(0.1),
+              color: colorScheme.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: IconButton(
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                     lang.translate('welcome'),
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.6),
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -219,11 +219,11 @@ class _QuickAction extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+            border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
           ),
           child: Column(
             children: [
-              Icon(icon, color: Theme.of(context).iconTheme.color?.withOpacity(0.8) ?? Colors.blueGrey.shade700),
+              Icon(icon, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.8) ?? Colors.blueGrey.shade700),
               const SizedBox(height: 8),
               Text(
                 label,
@@ -259,7 +259,7 @@ class _HomeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.15),
+            color: color.withValues(alpha: 0.15),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -275,14 +275,14 @@ class _HomeCard extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: color.withOpacity(0.1)),
+              border: Border.all(color: color.withValues(alpha: 0.1)),
             ),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Icon(icon, size: 32, color: color),
@@ -305,7 +305,7 @@ class _HomeCard extends StatelessWidget {
                         subtitle,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                           height: 1.3,
                         ),
                       ),

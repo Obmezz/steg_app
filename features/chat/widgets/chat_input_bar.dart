@@ -74,7 +74,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await Share.shareXFiles([XFile(stegoFile.path)], text: 'Secure Image');
+                    await SharePlus.instance.share(ShareParams(files: [XFile(stegoFile.path)], text: 'Secure Image'));
                     if (mounted && dialogContext.mounted) Navigator.pop(dialogContext);
                   },
                   child: Text(lang.translate('share')),

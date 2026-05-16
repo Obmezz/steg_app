@@ -14,48 +14,68 @@ class QRScannerScreen extends StatefulWidget {
   State<QRScannerScreen> createState() => _QRScannerScreenState();
 }
 
-class _QRScannerScreenState extends State<QRScannerScreen> {
+class _QRScannerScreenState extends State<QRScannerScreen> with WidgetsBindingObserver {
   bool _isScanned = false;
-  late MobileScannerController controller;
+  bool _isProcessing = false;
+  
+  final MobileScannerController controller = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    facing: CameraFacing.back,
+    formats: [BarcodeFormat.qrCode],
+  );
 
   @override
   void initState() {
     super.initState();
-    controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.normal,
-      facing: CameraFacing.back,
-      formats: [BarcodeFormat.qrCode],
-    );
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!controller.value.isInitialized) return;
+    switch (state) {
+      case AppLifecycleState.resumed:
+        controller.start();
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        controller.stop();
+        break;
+      default:
+        break;
+    }
+  }
+
   Future<void> _handleCapture(String code) async {
-    if (_isScanned) return;
+    if (_isScanned || _isProcessing) return;
     
     setState(() {
       _isScanned = true;
+      _isProcessing = true;
     });
+
+    // Stop scanner immediately to prevent double-scanning
+    await controller.stop();
 
     try {
       ContactModel contact;
-      
       try {
-        // Try parsing JSON first
         final data = jsonDecode(code);
-        final fingerprint = Fingerprint.generate(data["publicKey"]);
         contact = ContactModel(
           name: data["name"] ?? "Unknown",
           publicKey: data["publicKey"],
-          fingerprint: fingerprint,
+          fingerprint: Fingerprint.generate(data["publicKey"]),
           isVerified: true,
         );
       } catch (_) {
-        // Fallback: Check if it's a name|key format or raw key
         if (code.contains('|')) {
           final parts = code.split('|');
           contact = ContactModel(
@@ -74,18 +94,17 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         }
       }
 
-      // Add to provider immediately so it's saved to DB
       if (mounted) {
         await context.read<ContactProvider>().addContact(contact);
-        if (mounted) {
-          Navigator.pop(context, contact);
-        }
+        if (mounted) Navigator.pop(context, contact);
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _isScanned = false;
+          _isProcessing = false;
         });
+        controller.start(); // Restart if failed
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Invalid QR Code: $e")),
         );
@@ -94,13 +113,18 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   Future<void> _scanFromGallery() async {
+    if (_isProcessing) return;
+    
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
       if (image == null) return;
 
+      setState(() => _isProcessing = true);
+      
       final BarcodeCapture? capture = await controller.analyzeImage(image.path);
+      
       if (capture != null && capture.barcodes.isNotEmpty) {
         final code = capture.barcodes.first.rawValue;
         if (code != null) {
@@ -108,13 +132,15 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         }
       } else {
         if (mounted) {
+          setState(() => _isProcessing = false);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("No QR code found in the selected image")),
+            const SnackBar(content: Text("No QR code found in selected image")),
           );
         }
       }
     } catch (e) {
       if (mounted) {
+        setState(() => _isProcessing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Gallery error: $e")),
         );
@@ -128,106 +154,88 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text("Scan Public Key", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.image_outlined),
-            tooltip: "Scan from Gallery",
+            icon: const Icon(Icons.image_search),
+            tooltip: "Pick from Gallery",
             onPressed: _scanFromGallery,
           ),
-          IconButton(
-            icon: const Icon(Icons.flash_on),
-            tooltip: "Toggle Flash",
-            onPressed: () => controller.toggleTorch(),
-          ),
-          IconButton(
-            icon: const Icon(Icons.flip_camera_ios_rounded),
-            tooltip: "Switch Camera",
-            onPressed: () => controller.switchCamera(),
+          ValueListenableBuilder(
+            valueListenable: controller,
+            builder: (context, state, child) {
+              if (!state.isInitialized) return const SizedBox.shrink();
+              return IconButton(
+                icon: Icon(
+                  state.torchState == TorchState.on ? Icons.flash_on : Icons.flash_off,
+                  color: state.torchState == TorchState.unavailable ? Colors.grey : Colors.white,
+                ),
+                onPressed: state.torchState == TorchState.unavailable 
+                  ? null 
+                  : () => controller.toggleTorch(),
+              );
+            },
           ),
         ],
       ),
-      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           MobileScanner(
             controller: controller,
             onDetect: (capture) {
               final barcode = capture.barcodes.firstOrNull;
-              if (barcode != null && barcode.rawValue != null && !_isScanned) {
+              if (barcode != null && barcode.rawValue != null) {
                 _handleCapture(barcode.rawValue!);
               }
             },
-          ),
-          
-          // Scanner Overlay (Cutout)
-          ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              Colors.black54,
-              BlendMode.srcOut,
-            ),
-            child: Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    backgroundBlendMode: BlendMode.dstOut,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: 250,
-                    width: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+            errorBuilder: (context, error) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 60),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Scanner Error: ${error.errorCode.name}",
+                      style: const TextStyle(color: Colors.white),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => controller.start(),
+                      child: const Text("RETRY"),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
-
-          // Border for the cutout
-          Align(
-            alignment: Alignment.center,
+          // Scanner Overlay
+          Center(
             child: Container(
-              height: 250,
               width: 250,
+              height: 250,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: _isScanned ? Colors.green : Colors.white,
-                  width: 4,
+                  color: _isScanned ? Colors.green : Colors.white54, 
+                  width: 3
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: _isScanned
-                  ? const Center(
-                      child: CircularProgressIndicator(color: Colors.green),
-                    )
+              child: _isProcessing
+                  ? const Center(child: CircularProgressIndicator(color: Colors.green))
                   : null,
             ),
           ),
-
-          // Instructions
           Positioned(
-            bottom: 100,
+            bottom: 80,
             left: 0,
             right: 0,
             child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Text(
-                  _isScanned ? "Processing..." : "Align QR code within the frame",
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+              child: Text(
+                _isProcessing ? "Processing..." : "Align QR code within the frame",
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
               ),
             ),
           ),

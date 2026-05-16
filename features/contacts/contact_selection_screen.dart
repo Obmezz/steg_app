@@ -100,9 +100,9 @@ class ContactSelectionScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.05),
+                    color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.1)),
+                    border: Border.all(color: Theme.of(context).primaryColor.withValues(alpha: 0.1)),
                   ),
                   child: Row(
                     children: [
@@ -170,7 +170,7 @@ class ContactSelectionScreen extends StatelessWidget {
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                            backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                             child: Text(
                               contact.name[0].toUpperCase(),
                               style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),

@@ -38,11 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
 
+      if (!mounted) return;
+
       if (user != null) {
-        context.read<UserProvider>().setCurrentUser(user);
-        Navigator.of(context).pushReplacementNamed(Routes.home);
+        if (context.mounted) {
+          context.read<UserProvider>().setCurrentUser(user);
+          Navigator.of(context).pushReplacementNamed(Routes.home);
+        }
       } else {
-        UiHelpers.showSnackBar(context, lang.translate('invalid_credentials'), isError: true);
+        if (context.mounted) UiHelpers.showSnackBar(context, lang.translate('invalid_credentials'), isError: true);
       }
     } catch (e) {
       if (mounted) {
@@ -103,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: colorScheme.primary.withOpacity(0.1),
+                      color: colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(32),
                     ),
                     child: Icon(
